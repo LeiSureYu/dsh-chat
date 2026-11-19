@@ -1,0 +1,8 @@
+allowBuilds:
+  '@deepseek-ai/dsh-subprocess-local': set this to true or false
+  '@google/genai': set this to true or false
+  koffi: set this to true or false
+  node-pty: set this to true or false
+  protobufjs: set this to true or false
+minimumReleaseAgeExclude:
+  - '@deepseek-ai/dsh-client-ui-primitives@0.2.2-rc.5'

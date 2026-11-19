@@ -1,0 +1,7 @@
+node_modules/
+lib/
+web-dist/
+*.tsbuildinfo
+*.log
+.DS_Store
+cordis.dev.patch.yml

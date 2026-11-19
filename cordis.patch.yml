@@ -1,0 +1,38 @@
+# dsh-chat bundle patch: applied when a profile lists this bundle.
+# The row name resolves through Node module resolution against the
+# installed package (dsh plugin --profile <name> add dsh-chat).
+
+# dsh-chat 服务本体（Node 半：chat 工作区创建 + 会话自动归组）。
+- insert:
+    - id: dsh-chat
+      name: dsh-chat
+
+# 纯对话模式 agent preset：零编码工具 → 无工具目录、无审批、无提问工具；
+# persona 提供独立人设（不继承 coding agent 身份），官方 tool-web 内置联网。
+# 显示文案：用户声明的 preset 不走官方 locale 字典（声明即原文，永不翻译），
+# 因此中英文都写进 name/description，任何 UI 语言下都完整可读。
+- insert:
+    - id: preset-chat
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: chat
+        name: 对话模式 · Chat
+        description: 纯对话 — 没有编码工具，内置官方联网搜索。Pure conversation — no coding tools, with official web search built in.
+        order: 6
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: >-
+                你是 dsh-chat（对话模式），一个友好、诚实的对话助手，由 {{model}} 模型驱动。
+                You are dsh-chat (Chat mode), a friendly and honest conversational assistant powered by the {{model}} model.
+                与用户自然对话：回答问题、协助写作与思考；保持简洁准确，不确定时坦诚说明。
+                Converse naturally: answer questions, help with writing and thinking; stay concise and accurate, and be candid when unsure.
+                始终使用与用户相同的语言作答；用户混用中英文时跟随其主要语言。
+                Always reply in the same language the user uses; when the user mixes Chinese and English, follow their dominant language.
+                你没有任何工具，绝不输出 tool_call、函数调用或任何工具调用格式；即使被要求执行操作，也用文字说明你无法执行。
+                You have no tools and must never emit tool_call, function-call, or any tool-invocation format; if asked to perform an action, explain in words that you cannot.
+          - id: time-context
+            name: '@deepseek-ai/dsh-time-context'
+          - id: tool-web
+            name: '@deepseek-ai/dsh-tool-web'
