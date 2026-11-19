@@ -1,11 +1,11 @@
 # dsh-chat bundle patch: applied when a profile lists this bundle.
 # The row name resolves through Node module resolution against the
-# installed package (dsh plugin --profile <name> add dsh-chat).
+# installed package (dsh plugin --profile <name> add @leisureyu/dsh-chat).
 
 # dsh-chat 服务本体（Node 半：chat 工作区创建 + 会话自动归组）。
 - insert:
     - id: dsh-chat
-      name: dsh-chat
+      name: '@leisureyu/dsh-chat'
 
 # 纯对话模式 agent preset：零编码工具 → 无工具目录、无审批、无提问工具；
 # persona 提供独立人设（不继承 coding agent 身份），官方 tool-web 内置联网。

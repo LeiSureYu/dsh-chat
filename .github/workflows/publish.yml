@@ -1,0 +1,106 @@
+# npm 发布流水线：tag push（v*）或手动触发时发布；PR / main push 只跑检查。
+# 发布走 OIDC trusted publishing（id-token: write）；新包首次发布 OIDC
+# 无法引导，回退仓库密钥 NPM_TOKEN（与 dsh-smart-download 同一约定）。
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Typecheck and build
+    if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+  publish:
+    name: Build and publish
+    needs: [check]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # OIDC：npm trusted publishing 必需
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish
+        shell: bash
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -uo pipefail
+
+          name=$(node -p "require('./package.json').name")
+          ver=$(node -p "require('./package.json').version")
+
+          if npm view "$name@$ver" version >/dev/null 2>&1; then
+            echo "skip: $name@$ver already published"
+            exit 0
+          fi
+
+          tgz=$(npm pack --silent | tail -n 1)
+          echo "packed -> $tgz"
+
+          echo "publishing $name@$ver via OIDC (trusted publishing)…"
+          if ( unset NODE_AUTH_TOKEN; npm publish "$tgz" --access public ); then
+            exit 0
+          fi
+
+          echo "OIDC 发布失败，改用 NPM_TOKEN 重试…"
+          token="${NPM_TOKEN:-}"
+          if [ -z "$token" ]; then
+            echo "::error::未配置 NPM_TOKEN，无法发布 $name"
+            exit 1
+          fi
+          NODE_AUTH_TOKEN="$token" npm publish "$tgz" --access public

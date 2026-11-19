@@ -1,6 +1,6 @@
 {
-  "name": "dsh-chat",
-  "version": "0.2.0",
+  "name": "@leisureyu/dsh-chat",
+  "version": "0.2.1",
   "description": "Pure-conversation mode for DeepSeek Harness: the 'chat' agent preset (zero coding tools, official web search) plus the dedicated chat workspace — the official UI renders everything",
   "type": "module",
   "main": "lib/index.js",
@@ -12,6 +12,17 @@
   "engines": {
     "node": ">=24.9",
     "dsh": ">=0.2.0 <0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeiSureYu/dsh-chat.git"
+  },
+  "homepage": "https://github.com/LeiSureYu/dsh-chat#readme",
+  "bugs": {
+    "url": "https://github.com/LeiSureYu/dsh-chat/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dsh": {
     "bundle": {

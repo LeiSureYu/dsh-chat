@@ -11,21 +11,22 @@
 
 ## 安装
 
-**官方插件管理器** —— 侧边栏 **插件 → 添加插件**，粘贴仓库地址，装完重启 DSH（首次安装会提示批准本包的构建脚本）:
+**官方插件管理器** —— 侧边栏 **插件 → 添加插件**，粘贴包名或仓库地址，装完重启 DSH:
 
 ```
-https://github.com/LeiSureYu/dsh-chat
+@leisureyu/dsh-chat
 ```
 
-**命令行** —— 等价的路径安装:
+npm 包即装即用（无构建步骤）；粘贴 GitHub 仓库地址也可以，git 安装经 `prepare` 脚本自动构建，首次会提示批准本包的构建脚本。
+
+**命令行**:
 
 ```bash
+dsh plugin --profile web add @leisureyu/dsh-chat    # npm 包
+# 或
 git clone https://github.com/LeiSureYu/dsh-chat.git
-dsh plugin --profile web add /path/to/dsh-chat
-dsh web --profile web
+dsh plugin --profile web add /path/to/dsh-chat       # 本地路径（同 tarball 安装）
 ```
-
-git 安装经 pnpm 的 `prepare` 脚本自动构建（`lib/` 随装随出），无需手动 build。
 
 新会话界面里、工作区选择器旁的官方模式选择器（agent preset chip）选 **对话模式 · Chat** → 发消息。
 

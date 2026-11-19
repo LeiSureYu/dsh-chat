@@ -12,22 +12,25 @@
 
 ## Install
 
-**Official plugin manager** — sidebar **Plugins → Add plugin**, paste the repo URL, restart DSH
-(the first install asks you to approve this package's build script):
+**Official plugin manager** — sidebar **Plugins → Add plugin**, paste the package name or the
+repo URL, restart DSH:
 
 ```
-https://github.com/LeiSureYu/dsh-chat
+@leisureyu/dsh-chat
 ```
 
-**Command line** — equivalent path install:
+The npm package installs as-is (no build step); a GitHub repo URL works too — git installs
+build automatically via the `prepare` script, and the first install asks you to approve the
+package's build script.
+
+**Command line**:
 
 ```bash
+dsh plugin --profile web add @leisureyu/dsh-chat    # npm package
+# or
 git clone https://github.com/LeiSureYu/dsh-chat.git
-dsh plugin --profile web add /path/to/dsh-chat
-dsh web --profile web
+dsh plugin --profile web add /path/to/dsh-chat       # local path (same as tarball install)
 ```
-
-Git installs build automatically via pnpm's `prepare` script — no manual build needed.
 
 On the new-session screen, pick **对话模式 · Chat** in the official mode selector
 (the agent-preset chip next to the workspace picker) and start chatting.
