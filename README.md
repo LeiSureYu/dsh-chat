@@ -11,13 +11,21 @@
 
 ## 安装
 
-克隆仓库后按路径安装，装完重启 DSH:
+**官方插件管理器** —— 侧边栏 **插件 → 添加插件**，粘贴仓库地址，装完重启 DSH（首次安装会提示批准本包的构建脚本）:
+
+```
+https://github.com/LeiSureYu/dsh-chat
+```
+
+**命令行** —— 等价的路径安装:
 
 ```bash
 git clone https://github.com/LeiSureYu/dsh-chat.git
 dsh plugin --profile web add /path/to/dsh-chat
 dsh web --profile web
 ```
+
+git 安装经 pnpm 的 `prepare` 脚本自动构建（`lib/` 随装随出），无需手动 build。
 
 新会话界面里、工作区选择器旁的官方模式选择器（agent preset chip）选 **对话模式 · Chat** → 发消息。
 

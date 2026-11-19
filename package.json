@@ -20,7 +20,8 @@
   },
   "scripts": {
     "build": "tsdown",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "pnpm build"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "~4.1.0"

@@ -12,13 +12,22 @@
 
 ## Install
 
-Clone and install by path, then restart DSH:
+**Official plugin manager** — sidebar **Plugins → Add plugin**, paste the repo URL, restart DSH
+(the first install asks you to approve this package's build script):
+
+```
+https://github.com/LeiSureYu/dsh-chat
+```
+
+**Command line** — equivalent path install:
 
 ```bash
 git clone https://github.com/LeiSureYu/dsh-chat.git
 dsh plugin --profile web add /path/to/dsh-chat
 dsh web --profile web
 ```
+
+Git installs build automatically via pnpm's `prepare` script — no manual build needed.
 
 On the new-session screen, pick **对话模式 · Chat** in the official mode selector
 (the agent-preset chip next to the workspace picker) and start chatting.
